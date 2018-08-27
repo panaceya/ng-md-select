@@ -1,0 +1,37 @@
+<div class="container ">
+  <h1>mat-select</h1>
+  <div class="row">
+    <div class="col-lg-6">
+      <form [formGroup]="registerForm" #form="ngForm" (ngSubmit)="registerFormSubmit(registerForm.value)">
+        <mat-form-field class="input-group">
+          <mat-select placeholder="Choose country" formControlName="country"
+                      (selectionChange)="changeCountry($event.value)">
+            <mat-option *ngFor="let country of countryList" [value]="country.id">{{ country.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <!--
+        <mat-form-field class="input-group" *ngIf="!cityList.length == 0">
+          <mat-select placeholder="Choose city" formControlName="city">
+            <mat-option *ngFor="let city of cityList" [value]="city.id">{{ city.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        -->
+
+        <mat-form-field class="input-group"  *ngIf="!cityList.length == 0">
+          <input type="text" matInput formControlName="city" placeholder="Choose city" [matAutocomplete]="cities">
+          <mat-autocomplete #cities="matAutocomplete">
+            <mat-option *ngFor="let city of filteredCities | async" [value]="city.id" >
+              {{city.name}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <div class="md-form text-center m-3">
+          <button mat-flat-button class="btn-lg" [disabled]="registerForm.invalid">Submit</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
